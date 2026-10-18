@@ -188,8 +188,9 @@ export class MemoryTidy {
       restore();
       return this.abort(id, 'model-failed', 'no list of changes in the response');
     }
-    const ops = validateOps(raw, entries);
+    const { ops, dropped } = validateOps(raw, entries);
     const outcome = applyOps(entries, ops, today);
+    outcome.stats.dropped = dropped;
 
     try {
       const stamp = utcStamp();
